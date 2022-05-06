@@ -1,0 +1,26 @@
+apiVersion: network.azure.jet.crossplane.io/v1alpha2
+kind: NetworkInterface
+metadata:
+  name: t0nic
+  namespace: default
+  labels:
+    provider: azure
+    vnet: crossplane-poc-new
+spec:
+  providerConfigRef:
+    name: az-provider-config
+  forProvider:
+    ipConfiguration:
+      - name: aznic
+        privateIpAddressAllocation: Dynamic
+        subnetIdSelector:
+          matchControllerRef: true
+          matchLabels:
+            provider: azure
+            vnet: crossplane-poc-new
+    location: South India
+    resourceGroupNameSelector:
+      matchControllerRef: true
+      matchLabels:
+        provider: azure
+        vnet: crossplane-poc-new

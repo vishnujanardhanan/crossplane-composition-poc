@@ -1,0 +1,27 @@
+apiVersion: compute.azure.jet.crossplane.io/v1alpha1
+kind: LinuxVirtualMachine
+metadata:
+  name: vm
+  namespace: default
+  labels:
+    provider: azure
+    vnet: crossplane-poc-new
+spec:
+  providerConfigRef:
+    name: az-provider-config
+  forProvider:
+    adminUsername: azuser
+    location: South India
+    name: vm
+    osDisk:
+      - caching: ReadWrite
+        storageAccountType: Standard_LRS
+        diskSizeGb: 4
+    size: Standard_B1s
+    networkInterfaceIds:
+      - /subscriptions/5acc3e26-aa9b-4c3f-982d-e6bf4be1cc75/resourceGroups/azt0services-8b4gw-5ts9d/providers/Microsoft.Network/networkInterfaces/azt0services-8b4gw-vr6wn
+    resourceGroupNameSelector:
+      matchControllerRef: true
+      matchLabels:
+        provider: azure
+        vnet: crossplane-poc-new

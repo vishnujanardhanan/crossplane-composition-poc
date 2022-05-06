@@ -1,0 +1,17 @@
+apiVersion: crossplane.com/v1alpha1
+kind: t0service
+metadata:
+  name: azt0services
+  namespace: default
+spec:
+  parameters:
+    location: southindia
+    storageGB: 5
+    version: "11"
+    dbName: new-db
+  compositionSelector:
+    matchLabels:
+      provider: azure
+      services: t0services
+  writeConnectionSecretToRef:
+    name: example-db-connection

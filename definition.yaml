@@ -1,0 +1,60 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: compositet0services.crossplane.com
+spec:
+  group: crossplane.com
+  names:
+    kind: compositet0service
+    plural: compositet0services
+  claimNames:
+    kind: t0service
+    plural: t0services
+  connectionSecretKeys:
+  - username
+  - password
+  - hostname
+  - port
+  - database
+  versions:
+  - name: v1alpha1
+    referenceable: true
+    served: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  version:
+                    description: PostgreSQL engine version
+                    type: string
+                    enum: ["9.5", "9.6", "10", "11"]
+                  storageGB:
+                    type: integer
+                  location:
+                    description: Geographic location of this PostgreSQL server.
+                    type: string
+                  dbName:
+                    description: The name of the database
+                    type: string
+                required:
+                - version
+                - storageGB
+                - location
+                - dbName
+            required:
+            - parameters
+          status:
+            type: object
+            properties:
+              subnetId:
+                description: Subnet Id
+                type: string            
+              networkInterfaceId:
+                description: Network Interface card Id
+                type: string

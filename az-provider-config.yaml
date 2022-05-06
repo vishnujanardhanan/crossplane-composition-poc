@@ -1,0 +1,11 @@
+apiVersion: azure.jet.crossplane.io/v1alpha1
+kind: ProviderConfig
+metadata:
+  name: az-provider-config
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      namespace: default
+      name: azure-creds
+      key: creds
