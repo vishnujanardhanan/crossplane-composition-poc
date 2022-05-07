@@ -42,11 +42,15 @@ spec:
                   dbName:
                     description: The name of the database
                     type: string
+                  nic:
+                    description: nic id
+                    type: string
                 required:
                 - version
                 - storageGB
                 - location
                 - dbName
+                - nic
             required:
             - parameters
           status:
@@ -54,7 +58,7 @@ spec:
             properties:
               subnetId:
                 description: Subnet Id
-                type: string            
+                type: string          
               networkInterfaceId:
                 description: Network Interface card Id
-                type: string
+                type: array

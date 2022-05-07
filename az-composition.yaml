@@ -115,6 +115,7 @@ spec:
         apiVersion: compute.azure.jet.crossplane.io/v1alpha1
         kind: LinuxVirtualMachine
         metadata:
+          name: t0vm
           labels:
             provider: azure
             vnet: crossplane-poc-new
@@ -122,13 +123,24 @@ spec:
           providerConfigRef:
             name: az-provider-config
           forProvider:
+            disablePasswordAuthentication: false
+            platform_fault_domain: 1
             adminUsername: azuser
+            adminPasswordSecretRef:
+              key: password
+              name: vm-creds
+              namespace: default
             location: South India
             name: vm
+            sourceImageReference:
+              - offer: UbuntuServer
+                publisher: Canonical
+                sku: 18.04-LTS
+                version: latest
             osDisk:
               - caching: ReadWrite
                 storageAccountType: Standard_LRS
-                diskSizeGb: 4
+                diskSizeGb: 30
             size: Standard_B1s
             resourceGroupNameSelector:
               matchControllerRef: true
@@ -137,8 +149,12 @@ spec:
                 vnet: crossplane-poc-new
       patches:
       - type: FromCompositeFieldPath
-        fromFieldPath: status.networkInterfaceId
-        toFieldPath: spec.forProvider.networkInterfaceIds
+        fromFieldPath: "status.networkInterfaceId"
+        toFieldPath: "spec.forProvider.networkInterfaceIds[0]"
+        # - type: PatchSet
+        #   patchSetName: Metadata
+        #   fromFieldPath: "spec.parameters.nic"
+        #   toFieldPath: "spec.forProvider.networkInterfaceIds"    
     # - name: postgresql
     #   base:
     #     apiVersion: database.azure.crossplane.io/v1beta1
